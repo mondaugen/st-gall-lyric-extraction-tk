@@ -24,5 +24,5 @@ plugin_extensions = gamera_setup.generate_plugins(plugins, PLUGIN_PACKAGE)
 setup(name=TOOLKIT_NAME, version="0.1.0",
       ext_modules = plugin_extensions,
       packages = [PACKAGE, PLUGIN_PACKAGE],
-      scripts = ['scripts/st_gall_lyric_extraction'],
-      requires = ['numpy'])
+      scripts = ['scripts/st_gall_lyric_extraction'])
+#      requires = ['numpy'])

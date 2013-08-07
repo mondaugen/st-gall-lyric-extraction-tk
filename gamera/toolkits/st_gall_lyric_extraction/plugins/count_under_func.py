@@ -34,13 +34,25 @@ class count_black_under_line_points(PluginFunction):
   args = Args([Real("x0"), Real("y0"), Real("x1"), Real("y1")])
   doc_examples = [(ONEBIT,)]
 
+class show_that_this_works(PluginFunction):
+  """
+  Just shows that this stuff works.
+  """
+  self_type = ImageType([ONEBIT])
+  return_type = Int("some_number_to_show_that_it_works")
+  pure_python = True
+  def __call__(self):
+    return 123
+  __call__ = staticmethod(__call__)
+
 class Count_under_funcModule(PluginModule):
   category = "Analysis"
   cpp_headers = ["count_under_func.hpp"]
 #  functions = [count_black_under_line, count_black_under_line_points, \
 #      colour_image_using_ccs]
-  functions = [count_black_under_line, count_black_under_line_points]
-  author = "Nicholas Esrerer"
+  functions = [count_black_under_line, count_black_under_line_points, \
+      show_that_this_works]
+  author = "Nicholas Esterer"
   url = "nicholas.esterer@gmail.com"
 
 module = Count_under_funcModule()
