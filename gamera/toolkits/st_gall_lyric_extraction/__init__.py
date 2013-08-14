@@ -8,4 +8,4 @@ and may be omitted if you are not concerned with that.
 
 from gamera import toolkits
 from gamera.toolkits.st_gall_lyric_extraction import main
-from gamera.toolkits.st_gall_lyric_extraction.plugins import count_under_func
+from gamera.toolkits.st_gall_lyric_extraction.plugins import find_lyrics
