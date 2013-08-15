@@ -1,5 +1,5 @@
 from gamera.plugin import *
-import _count_under_func
+#import _count_under_func
 
 import sys
 #from numpy import NaN, Inf, arange, isscalar, array, argmax

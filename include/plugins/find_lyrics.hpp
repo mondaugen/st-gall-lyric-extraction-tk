@@ -51,16 +51,19 @@ class LineSegment : public RationalFunction {
 class CCContainsFunction {
   public:
     RationalFunction *func;
-    bool operator()(const OneBitImageView *cc) {
+    bool operator()(Cc *cc) {
+//      Gamera::ImageView *cc = new ImageView(*_cc);
       for (int x = cc->ul_x(); x <= cc->lr_x(); ++x) {
         int y = (int)(*func)(x);
 //        int y = (int)round((double)(*func)(x));
         if ((y >= cc->ul_y()) && (y <= cc->lr_y())) {
           if (is_black(cc->get(Point(x - cc->ul_x(), y - cc->ul_y())))) {
+//            delete cc;
             return true;
           }
         }
       }
+//      delete cc;
       return false;
     };
     CCContainsFunction(RationalFunction *func) {
@@ -68,22 +71,27 @@ class CCContainsFunction {
     };
 };
 
-ImageList
-remove_ccs_intersected_by_func(ImageList &ccs, RationalFunction &func)
+ImageList *
+remove_ccs_intersected_by_func(ImageList *ccs, RationalFunction &func)
 {
   CCContainsFunction ccContainsFunc(&func);
-  ImageList result(ccs.begin(), std::remove_if(ccs.begin(), ccs.end(),
-        ccContainsFunc));
+  ImageList *result;
+  ImageList::iterator ccs_it;
+  for (ccs_it = ccs->begin(); ccs_it != ccs->end(); ++ccs_it) {
+    Cc *cc = static_cast<Cc*>(*ccs_it);
+    if (!ccContainsFunc(cc))
+      result->push_back(cc);
+  }
   return result;
 }
 
 ImageList*
 remove_ccs_intersected_by_lines(std::vector< std::pair<Image*, int> > ccs, PyObject *list_m_b_pairs)
 {
-  ImageList result = new ImageList;
+  ImageList *result = new ImageList;
   std::vector< std::pair<Image*, int> >::iterator it;
   for (it = ccs.begin(); it != ccs.end(); ++it)
-    result.push_back(it->first);
+    result->push_back(it->first);
   PyObject *seq, *tup;
   Py_ssize_t i, len;
 
@@ -109,6 +117,9 @@ remove_ccs_intersected_by_lines(std::vector< std::pair<Image*, int> > ccs, PyObj
   }
 
   Py_DECREF(seq);
+
+  result->pop_back();
+  result->pop_back();
 
   return result;
 }
